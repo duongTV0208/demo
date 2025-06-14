@@ -1,0 +1,293 @@
+Bài 1: Viết chương trình Shell Script trên Linux để tạo cây Menu và thực hiện các chức năng:
+Yêu cầu:
+Hiển thị thư mục hiện tại.
+
+Xem địa chỉ IP của máy chủ.
+
+Thoát khỏi chương trình.
+ 
+
+
+ #!/bin/bash
+
+while true; do
+    echo "=============================="
+    echo "   MENU CHƯƠNG TRÌNH SHELL"
+    echo "1. Hiển thị thư mục hiện tại"
+    echo "2. Xem địa chỉ IP của máy"
+    echo "3. Thoát"
+    echo "=============================="
+    read -p "Chọn chức năng [1-3]: " choice
+
+    case $choice in
+        1)
+            echo "Thư mục hiện tại là: $(pwd)"
+            ;;
+        2)
+            echo "Địa chỉ IP của máy là:"
+            ip a | grep inet | grep -v 127.0.0.1 | awk '{print $2}'
+            ;;
+        3)
+            echo "Đang thoát chương trình..."
+            exit 0
+            ;;
+        *)
+            echo "Lựa chọn không hợp lệ. Vui lòng chọn lại."
+            ;;
+    esac
+
+    echo ""  # dòng trống để dễ đọc
+done
+
+
+
+
+b2.Viết Shell Script cho phép nhập tên một user và kiểm tra user đó có tồn tại trong hệ thống hay không.
+
+
+#!/bin/bash
+
+read -p "Nhập tên người dùng cần kiểm tra: " username
+
+if id "$username" &>/dev/null; then
+    echo "Người dùng '$username' tồn tại trong hệ thống."
+else
+    echo "Người dùng '$username' KHÔNG tồn tại trong hệ thống."
+fi
+
+
+Bài 1. Dùng kí tự "*" để vẽ hình như bên (hình tam giác vuông ngược chiều dọc)
+
+
+#!/bin/bash
+
+rows=7
+for ((i=1; i<=rows; i++)); do
+    for ((j=1; j<=rows; j++)); do
+        if (( j == i || j == rows - i + 1 )); then
+            echo -n "*"
+        else
+            echo -n " "
+        fi
+    done
+    echo
+done
+
+
+\
+Bài 2. Tạo 10 thư mục cùng lúc: thưmuc1, thưmuc2, ..., thưmuc10
+
+#!/bin/bash
+
+for i in {1..10}; do
+    mkdir "thumuc$i"
+done
+
+Bài 3. Giải và biện luận phương trình bậc 2: Ax² + Bx + C = 0
+#!/bin/bash
+
+read -p "Nhập hệ số A: " a
+read -p "Nhập hệ số B: " b
+read -p "Nhập hệ số C: " c
+
+if [ "$a" -eq 0 ]; then
+    if [ "$b" -eq 0 ]; then
+        if [ "$c" -eq 0 ]; then
+            echo "Phương trình vô số nghiệm."
+        else
+            echo "Phương trình vô nghiệm."
+        fi
+    else
+        x=$(echo "scale=2; -$c / $b" | bc)
+        echo "Phương trình có nghiệm: x = $x"
+    fi
+else
+    delta=$(echo "$b * $b - 4 * $a * $c" | bc)
+    if (( $(echo "$delta < 0" | bc -l) )); then
+        echo "Phương trình vô nghiệm."
+    elif (( $(echo "$delta == 0" | bc -l) )); then
+        x=$(echo "scale=2; -$b / (2 * $a)" | bc)
+        echo "Phương trình có nghiệm kép: x = $x"
+    else
+        sqrt_delta=$(echo "scale=2; sqrt($delta)" | bc)
+        x1=$(echo "scale=2; (-$b + $sqrt_delta) / (2 * $a)" | bc)
+        x2=$(echo "scale=2; (-$b - $sqrt_delta) / (2 * $a)" | bc)
+        echo "Phương trình có hai nghiệm phân biệt:"
+        echo "x1 = $x1"
+        echo "x2 = $x2"
+    fi
+fi
+
+Bài 1. Dùng ký tự "*" vẽ hình như bên phải (dạng hình chữ nhật 5x5 có các dòng chẵn chứa dấu *)
+
+#!/bin/bash
+
+rows=5
+cols=5
+
+for ((i=1; i<=rows; i++)); do
+    if (( i % 2 == 0 )); then
+        for ((j=1; j<=cols; j++)); do
+            echo -n "*"
+        done
+    else
+        for ((j=1; j<=cols; j++)); do
+            echo -n " "
+        done
+    fi
+    echo
+done
+
+//tạo thư mục
+mkdir tên_thư_mục
+//Tạo thư mục lồng nhau (có thư mục cha và con):
+mkdir -p thu_muc_cha/thu_muc_con
+
+
+//Dùng touch – Tạo file rỗng
+
+touch tenfile.txt
+
+
+| **Tên lệnh**        | **Ý nghĩa**                                                         |
+| ------------------- | ------------------------------------------------------------------- |
+| `date`              | Hiện ngày giờ hiện tại                                              |
+| `cal`               | Hiện lịch tháng này                                                 |
+| `uptime`            | Hiện thời gian từ lúc bật máy                                       |
+| `w`                 | Hiện những người đang đăng nhập                                     |
+| `whoami`            | Hiện tên tài khoản của bạn                                          |
+| `uname -a`          | Hiện thông tin về nhân hệ điều hành (kernel, version, hostname,...) |
+| `cat /proc/cpuinfo` | Hiện thông tin về CPU                                               |
+| `cat /proc/meminfo` | Hiện thông tin về bộ nhớ RAM                                        |
+| `du`                | Hiện dung lượng thư mục                                             |
+| `df`                | Hiện mức sử dụng đĩa                                                |
+| `free`              | Hiện dung lượng bộ nhớ trống và swap (bộ nhớ trao đổi)              |
+
+
+//Nhập vào số tự nhiên N từ bàn phím. Viết chương trình in dãy các số từ 1 đến N và tính tổng các số từ 1 đến N.
+
+#!/bin/bash
+read -p "Nhập số nguyên N: " N
+tong=0
+echo "Dãy số từ 1 đến $N:"
+for ((i=1; i<=N; i++))
+do
+    echo -n "$i "
+    tong=$((tong + i))
+done
+echo -e "\nTổng các số từ 1 đến $N là: $tong"
+
+
+//////
+
+#!/bin/bash
+
+while true; do
+    clear
+    echo "Ten Server - ubuntusnort"
+    echo "-----------------------------"
+    echo "        M A I N - M E N U"
+    echo "-----------------------------"
+    echo "1. Hien thi ngay va thoi gian."
+    echo "2. Hien thi cac tai khoan dang hoat dong."
+    echo "3. Hien thi ket noi mang."
+    echo "4. Kiem tra dia chi IP cua may."
+    echo "5. Ping IP xem co ket noi mang?."
+    echo "6. Thoat"
+    echo "-----------------------------"
+    read -p "Nhap lua chon cua ban [1-6]: " choice
+
+    case $choice in
+        1)
+            echo "Ngay va thoi gian hien tai:"
+            date
+            ;;
+        2)
+            echo "Cac tai khoan dang dang nhap:"
+            who
+            ;;
+        3)
+            echo "Cac ket noi mang hien tai:"
+            netstat -tunlp
+            ;;
+        4)
+            echo "Dia chi IP cua may:"
+            hostname -I
+            ;;
+        5)
+            read -p "Nhap IP muon ping: " ip
+            ping -c 4 $ip
+            ;;
+        6)
+            echo "Tam biet!"
+            exit 0
+            ;;
+        *)
+            echo "Lua chon khong hop le. Vui long thu lai."
+            ;;
+    esac
+
+    echo ""
+    read -p "Nhan Enter de tiep tuc..."
+done
+
+Cài python3: sudo apt-get install python3
+
+Tạo chương trình HelloWorld (sử dụng vim) lưu với tên Hello.py:
+print("Hello, Python!!!")
+
+Chạy chương trình: python3 Hello.py
+
+Chạy 1 số ví dụ
+
+//vd1
+x = int(input("Nhập số thứ nhất:"))  
+y = int(input("Nhập số thứ hai:"))  
+print("Tổng của hai số là:", x + y)  
+print("Hiệu của hai số là:", x - y)  
+print("Tích của hai số là:", x * y)  
+print("Thương của hai số là:", x / y)
+//vd2
+a = ["Hà Nội", "Hải Phòng", "TP Hồ Chí Minh"]  
+for tp in a:  
+    print(tp)
+//vd3
+a = int(input("Nhập vào số tự nhiên:"))  
+for i in range(1, a+1):  
+    print(i)
+//vd4
+a = int(input("Nhập vào số tự nhiên n:"))  
+chan = 0  
+le = 0
+ 
+
+Viết chương trình Shell Script trên Linux cho phép nhập vào tên một thư mục bất kỳ từ bàn phím. Yêu cầu đó kiểm tra tên groupvừa nhập có trong hệ thống.
+#!/bin/bash
+
+read -p "Nhập tên group cần kiểm tra: " group_name
+
+# Kiểm tra group có tồn tại trong hệ thống không
+if getent group "$group_name" > /dev/null 2>&1; then
+    echo "Group '$group_name' tồn tại trong hệ thống."
+else
+    echo "Group '$group_name' KHÔNG tồn tại trong hệ thống."
+fi
+ #tạo group
+sudo groupadd ten_group
+#kiểm tra grop da tao
+getent group ten_group
+#xem tất group 
+cat /etc/group
+#thêm user vao group
+
+sudo usermod -aG ten_group ten_user
+
+#xoa group
+sudo groupdel ten_group
+# Kiểm tra user thuộc group nào
+
+groups ten_user
+
+🔹 Ví dụ:
+
+groups hieu
